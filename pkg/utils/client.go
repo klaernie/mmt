@@ -1,6 +1,9 @@
 package utils
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/spf13/viper"
 	"github.com/hashicorp/go-retryablehttp"
 )
@@ -11,4 +14,11 @@ func timeoutFromConfig() int {
 	return viper.GetInt(key)
 }
 
-var Client = retryablehttp.NewClient().StandardClient()
+var Client *http.Client
+
+func init () {
+	var retryableClient = retryablehttp.NewClient()
+	retryableClient.Logger = nil
+	Client = retryableClient.StandardClient()
+
+}
